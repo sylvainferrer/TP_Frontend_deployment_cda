@@ -13,7 +13,7 @@ pipeline {
             agent { label 'agent-lftp' }
             steps {
                 sh '''
-                   lftp -u hoopstore,'Azerty77380' ftp-hoopstore.alwaysdata.net -e "mirror -R ${WORKSPACE}/ www/ ; quit"
+                   lftp -u hoopstore,"$Mdp" "$ftp" -e "mirror -R ${WORKSPACE}/ www/ ; quit"
                 '''
             }
         }
@@ -21,7 +21,7 @@ pipeline {
             agent { label 'agent-node' }
                 steps {
                      sh '''
-                        sshpass -p "Azerty77380" ssh -o StrictHostKeyChecking=no hoopstore@ssh-hoopstore.alwaysdata.net '
+                        sshpass -p "$Mdp" ssh -o StrictHostKeyChecking=no "$ssh" '
                         cd www/ &&
                         npm install
                         '
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    sshpass -p "Azerty77380" ssh -o StrictHostKeyChecking=no hoopstore@ssh-hoopstore.alwaysdata.net "
+                    sshpass -p "$Mdp" ssh -o StrictHostKeyChecking=no "$ssh" "
                         echo 'API_URL=http://storehoop.alwaysdata.net/api/podcast.php' > www/.env
                     "
                     '''
