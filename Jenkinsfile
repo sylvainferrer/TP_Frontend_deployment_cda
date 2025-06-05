@@ -4,7 +4,7 @@ pipeline {
 
     stages {
         stage('Git clone') {
-            agent { label 'agent-lftp' }
+            agent { label 'agent-node' }
             steps {
                 git branch: 'main', url: 'https://github.com/sylvainferrer/TP_Frontend_deployment_cda.git'
             }
@@ -21,7 +21,7 @@ pipeline {
             }
         }
         stage('Copy server') {
-            agent { label 'agent-lftp' }
+            agent { label 'agent-node' }
             steps {
                 sh '''
                    lftp -u hoopstore,"$Mdp" "$ftp" -e "mirror -R ${WORKSPACE}/ www/ ; quit"
